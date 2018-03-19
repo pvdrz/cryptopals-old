@@ -1,5 +1,3 @@
-extern crate cryptopals;
-
 use cryptopals::encoding::base64::Base64;
 
 #[test]
