@@ -25,65 +25,55 @@ impl Base64 {
 
     pub fn encode(&self, bytes: &[u8]) -> Vec<u8> {
         let mut result = Vec::new();
-        let mut iter = bytes.iter();
-        let (mut c1, mut c2, mut c3);
-        while {
-            c1 = iter.next().map(|&x| x as usize);
-            c2 = iter.next().map(|&x| x as usize);
-            c3 = iter.next().map(|&x| x as usize);
-            c1.is_some()
-        } {
+        let mut region: u8 = 0;
+        let mut tail: usize = 0;
+        for &b in bytes {
+            let c = b as usize;
             // 0b11111100 = 252
             // 0b00000011 = 3
             // 6000 = 240
             // 311 = 15
             // 4800 = 192
-            // 1511 = 63
-            let b1 = c1.unwrap();
-            result.push(self.enc[(b1 & 252) >> 2]);
-            if let Some(b2) = c2 {
-                result.push(self.enc[((b1 & 3) << 4) + ((b2 & 240) >> 4)]);
-                if let Some(b3) = c3 {
-                    result.push(self.enc[((b2 & 15) << 2) + ((b3 & 192) >> 6)]);
-                    result.push(self.enc[(b3 & 63)]); 
-                } else {
-                    result.push(self.enc[((b2 & 15) << 2)]);
-                    result.push(self.padding);
-                }
+            // 1511 = 63 
+            if region == 0 {
+                result.push(self.enc[(c & 252) >> 2]);
+                tail = (c & 3) << 4;
+            } else if region == 1 {
+                result.push(self.enc[tail + ((c & 240) >> 4)]);
+                tail = (c & 15) << 2;
             } else {
-                result.push(self.enc[((b1 & 3) << 4)]);
-                result.push(self.padding);
-                result.push(self.padding);
+                result.push(self.enc[tail + ((c & 192) >> 6)]);
+                result.push(self.enc[c & 63]);
             }
-        } 
+            region = (region + 1) % 3;
+        }
+        if region != 0 {
+            result.push(self.enc[tail]);
+            result.extend((0..3 - region).map(|_| self.padding));
+        }
         result
     }
 
     pub fn decode(&self, bytes: &[u8]) -> Vec<u8> {
         let mut result = Vec::new();
-        let mut iter = bytes.iter();
-        let (mut c1, mut c2, mut c3, mut c4);
-        while {
-            c1 = iter.next().and_then(|x| self.dec.get(x));
-            c2 = iter.next().and_then(|x| self.dec.get(x));
-            c3 = iter.next().and_then(|x| self.dec.get(x));
-            c4 = iter.next().and_then(|x| self.dec.get(x));
-            c1.is_some()
-        } {
-            // 0b110000 = 48
-            // 0b001111 = 15
-            // 0b111100 = 60
-            // 0b000011 = 3
-            let b1 = c1.unwrap();
-            let b2 = c2.unwrap();
-            result.push((b1 << 2) + ((b2 & 48) >> 4));
-            if let Some(b3) = c3 {
-                result.push(((b2 & 15) << 4) + ((b3 & 60) >> 2));
-                if let Some(b4) = c4 {
-                    result.push(((b3 & 3) << 6) + b4);
+        let mut region: u8 = 0;
+        let mut tail: u8 = 0;
+        for b in bytes {
+            if let Some(c) = self.dec.get(b) {
+                if region == 0 {
+                    tail = c << 2;
+                } else if region == 1 {
+                    result.push(tail + ((c & 48) >> 4)); 
+                    tail = (c & 15) << 4; 
+                } else if region == 2 {
+                    result.push(tail + ((c & 60) >> 2));
+                    tail = (c & 3) << 6; 
+                } else {
+                    result.push(tail + c);
                 }
+                region = (region + 1) % 4;
             }
-        }      
+        }
         result
     }
 }
