@@ -30,16 +30,16 @@ impl Base16 {
 
     pub fn decode(&self, bytes: &[u8]) -> Vec<u8> {
         let mut result = Vec::new();
-        let mut iter = bytes.iter();
-        let (mut c1, mut c2);
-        while {
-            c1 = iter.next().and_then(|x| self.dec.get(x));
-            c2 = iter.next().and_then(|x| self.dec.get(x));
-            c1.is_some()
-        } {
-            let b1 = c1.unwrap();
-            let b2 = c2.unwrap();
-            result.push((b1 << 4) + b2);
+        let mut tail: u8 = 0;
+        let mut region: u8 = 0;
+        for b in bytes {
+            let c = self.dec[b];
+            if region == 0 {
+                tail = c << 4;
+            } else {
+                result.push(tail + c);
+            }
+            region = (region + 1) % 2;
         }
         result
     }
