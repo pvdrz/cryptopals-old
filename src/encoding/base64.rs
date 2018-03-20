@@ -29,12 +29,6 @@ impl Base64 {
         let mut tail: usize = 0;
         for &b in bytes {
             let c = b as usize;
-            // 0b11111100 = 252
-            // 0b00000011 = 3
-            // 6000 = 240
-            // 311 = 15
-            // 4800 = 192
-            // 1511 = 63 
             if region == 0 {
                 result.push(self.enc[(c & 252) >> 2]);
                 tail = (c & 3) << 4;
