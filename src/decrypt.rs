@@ -1,5 +1,6 @@
 use std::cmp::Ordering;
 use std::collections::HashMap;
+use rayon::iter::{IntoParallelIterator, ParallelIterator};
 
 lazy_static! {
     static ref EN_FREQS: HashMap<u8, f64> = 
@@ -45,7 +46,7 @@ fn char_count(buf: &[u8]) -> HashMap<u8, usize> {
 pub fn break_single_xor(buf: &[u8]) -> Option<(u8, f64)> {
     let total = buf.len() as f64;
     let count: HashMap<u8, usize> = char_count(buf);
-    (0u8..255).map(|key| {
+    (0u8..255).into_par_iter().map(|key| {
         let chisq = EN_FREQS.iter().map(|(b, f)| match count.get(&(b ^ key)) {
             Some(&c) => (f - (c as f64 / total)).powi(2) / f,
             None => 1.0
