@@ -1,7 +1,7 @@
 use std::cmp::Ordering;
 use std::collections::HashMap;
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
-use utils::hamming;
+use utils::distances::hamming;
 
 lazy_static! {
     static ref EN_FREQS: HashMap<u8, f64> =

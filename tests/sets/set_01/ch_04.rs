@@ -1,7 +1,7 @@
-use cryptopals::utils::load_as_bytes;
-use cryptopals::decrypt::break_single_xor;
-use cryptopals::xor::single_xor;
+use cryptopals::attacks::xor::break_single_xor;
+use cryptopals::cyphers::xor::single_xor;
 use cryptopals::encoding::base16::Base16;
+use cryptopals::utils::io::load_as_bytes;
 
 #[test]
 fn challenge_04() {

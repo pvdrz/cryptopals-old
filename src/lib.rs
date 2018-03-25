@@ -3,7 +3,7 @@
 extern crate lazy_static;
 extern crate rayon;
 
+pub mod attacks;
+pub mod cyphers;
 pub mod encoding;
-pub mod xor;
-pub mod decrypt;
 pub mod utils;

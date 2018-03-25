@@ -1,6 +1,6 @@
+use cryptopals::attacks::xor::break_single_xor;
+use cryptopals::cyphers::xor::single_xor;
 use cryptopals::encoding::base16::Base16;
-use cryptopals::xor::single_xor;
-use cryptopals::decrypt::break_single_xor;
 
 #[test]
 fn challenge_03() {

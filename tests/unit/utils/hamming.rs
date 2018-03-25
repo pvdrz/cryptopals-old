@@ -1,4 +1,4 @@
-use cryptopals::utils::hamming;
+use cryptopals::utils::distances::hamming;
 
 #[test]
 fn hamming_0() {

@@ -1,4 +1,4 @@
-use cryptopals::xor::repeating_xor;
+use cryptopals::cyphers::xor::repeating_xor;
 use cryptopals::encoding::base16::Base16;
 
 #[test]

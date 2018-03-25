@@ -1,7 +1,7 @@
-use cryptopals::decrypt::break_repeating_xor;
+use cryptopals::attacks::xor::break_repeating_xor;
+use cryptopals::cyphers::xor::repeating_xor;
 use cryptopals::encoding::base64::Base64;
-use cryptopals::utils::load_as_bytes;
-use cryptopals::xor::repeating_xor;
+use cryptopals::utils::io::load_as_bytes;
 
 #[test]
 fn challenge_06() {
