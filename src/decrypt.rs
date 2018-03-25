@@ -1,9 +1,10 @@
 use std::cmp::Ordering;
 use std::collections::HashMap;
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
+use utils::hamming;
 
 lazy_static! {
-    static ref EN_FREQS: HashMap<u8, f64> = 
+    static ref EN_FREQS: HashMap<u8, f64> =
         [(b' ', 0.15208646052236566),
         (b'e', 0.10135094566196337),
         (b't', 0.07481236865806064),
@@ -61,4 +62,28 @@ pub fn break_single_xor(buf: &[u8]) -> Option<(u8, f64)> {
             x.1.partial_cmp(&y.1).unwrap()
         }
     })
+}
+
+pub fn break_repeating_xor(buf: &[u8], n_bufs: usize) -> Vec<u8> {
+    // this should not break, keysize > 0 and there are several keysizes
+    let (keysize, _) = (2..=40).map(|keysize| {
+        let bufs = (0..n_bufs).map(|n| &buf[n*keysize..(n+1)*keysize])
+            .collect::<Vec<_>>();
+        let mut dist = 0.0;
+        for i in 0..n_bufs {
+            for j in i..n_bufs {
+                dist += hamming(bufs[i], bufs[j]) as f64
+            }
+        }
+        (keysize as usize, (dist / ((4 * keysize) as f64)))
+    }).min_by(|x, y| x.1.partial_cmp(&y.1).unwrap()).unwrap();
+
+    let bufsize = buf.len();
+
+    (0..keysize).map(|i| {
+        let buf_k: Vec<u8> = (0..bufsize/keysize)
+            .filter_map(|j| buf.get(i + j * keysize).map(|&x| x))
+            .collect();
+        break_single_xor(&buf_k).unwrap().0
+    }).collect::<Vec<u8>>()
 }

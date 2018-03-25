@@ -1,3 +1,4 @@
+#![feature(universal_impl_trait)]
 #[macro_use]
 extern crate lazy_static;
 extern crate rayon;
