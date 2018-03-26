@@ -20,3 +20,17 @@ lazy_static! {
 pub fn byte_substitution(buf: &[u8]) -> Vec<u8> {
     buf.iter().map(|&b| SBOX[b as usize]).collect()
 }
+
+pub fn shift_rows(buf: &[u8]) -> Vec<u8> {
+    let mut block = Vec::new();
+    for i in 0..4 {
+        let row = [
+            buf[(5*i) % 16],
+            buf[(5*i + 4) % 16],
+            buf[(5*i + 8) % 16],
+            buf[(5*i + 12) % 16]
+        ];
+        block.extend_from_slice(&row);
+    }
+    block
+}
