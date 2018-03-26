@@ -13,9 +13,10 @@ lazy_static! {
             }
             r ^ 99
         }));
-
         sbox
     };
+    static ref MUL2: Vec<u8> = (0u8..=255).map(|a| mul(a, 2)).collect();
+    static ref MUL3: Vec<u8> = (0u8..=255).map(|a| mul(a, 3)).collect();
 }
 
 pub fn byte_substitution(buf: &[u8]) -> Vec<u8> {
@@ -40,10 +41,10 @@ pub fn mix_columns(buf: &[u8]) -> Vec<u8> {
     let mut block = Vec::new();
     for i in 0..4 {
         let col = [
-            mul(2, buf[4*i]) ^ buf[3 + 4*i] ^ buf[2 + 4*i] ^ mul(3, buf[1 + 4*i]),
-            mul(2, buf[1 + 4*i]) ^ buf[4*i] ^ buf[3 + 4*i] ^ mul(3, buf[2 + 4*i]),
-            mul(2, buf[2 + 4*i]) ^ buf[1 + 4*i] ^ buf[4*i] ^ mul(3, buf[3 + 4*i]),
-            mul(2, buf[3 + 4*i]) ^ buf[2 + 4*i] ^ buf[1 + 4*i] ^ mul(3, buf[4*i]),
+            MUL2[buf[4*i] as usize] ^ buf[3 + 4*i] ^ buf[2 + 4*i] ^ MUL3[buf[1 + 4*i] as usize],
+            MUL2[buf[1 + 4*i] as usize] ^ buf[4*i] ^ buf[3 + 4*i] ^ MUL3[buf[2 + 4*i] as usize],
+            MUL2[buf[2 + 4*i] as usize] ^ buf[1 + 4*i] ^ buf[4*i] ^ MUL3[buf[3 + 4*i] as usize],
+            MUL2[buf[3 + 4*i] as usize] ^ buf[2 + 4*i] ^ buf[1 + 4*i] ^ MUL3[buf[4*i] as usize],
         ];
         block.extend_from_slice(&col);
     }
