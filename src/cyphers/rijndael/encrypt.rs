@@ -64,7 +64,6 @@ pub fn key_schedule(key: &[u8]) -> Vec<Vec<u8>> {
     let mut rc = 1;
     let mut last = key.to_vec();
     let mut round_keys = Vec::new();
-    round_keys.push(last.clone());
     for _ in 1..11 {
         let mut next = Vec::new();
 
@@ -85,3 +84,16 @@ pub fn key_schedule(key: &[u8]) -> Vec<Vec<u8>> {
     round_keys
 }
 
+pub fn encrypt(buf: &[u8], key: &[u8]) -> Vec<u8> {
+    let keys = key_schedule(&key);
+    let mut out = fixed_xor(buf, key);
+    for (i, key) in keys.iter().enumerate() {
+        out = byte_substitution(&out);
+        out = shift_rows(&out);
+        if i != 9 {
+            out = mix_columns(&out);
+        }
+        out = fixed_xor(&out, &key);
+    }
+    out
+}
