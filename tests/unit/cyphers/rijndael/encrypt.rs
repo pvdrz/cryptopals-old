@@ -10,7 +10,7 @@ fn byte_substitution_0() {
 #[test]
 fn shift_rows_0() {
     let input: Vec<u8> = (0..16).collect();
-    let result = vec![0u8, 4, 8, 12, 5, 9, 13, 1, 10, 14, 2, 6, 15, 3, 7, 11];
+    let result = vec![0u8, 5, 10, 15, 4, 9, 14, 3, 8, 13, 2, 7, 12, 1, 6, 11];
     assert_eq!(shift_rows(&input), result);
 }
 
