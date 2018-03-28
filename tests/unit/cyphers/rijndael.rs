@@ -2,7 +2,7 @@ use cryptopals::cyphers::rijndael::Cypher;
 use cryptopals::encoding::base16::Base16;
 
 #[test]
-fn encrypt_0() {
+fn rijndael_0() {
     let b16 = Base16::new();
 
     let key =        b16.decode(b"00000000000000000000000000000000");
@@ -12,10 +12,11 @@ fn encrypt_0() {
     let cypher = Cypher::new(key);
 
     assert_eq!(cyphertext, cypher.encrypt(&plaintext));
+    assert_eq!(plaintext, cypher.decrypt(&cyphertext));
 }
 
 #[test]
-fn encrypt_1() {
+fn rijndael_1() {
     let b16 = Base16::new();
 
     let key =        b16.decode(b"00000000000000000000000000000000");
@@ -25,10 +26,11 @@ fn encrypt_1() {
     let cypher = Cypher::new(key);
 
     assert_eq!(cyphertext, cypher.encrypt(&plaintext));
+    assert_eq!(plaintext, cypher.decrypt(&cyphertext));
 }
 
 #[test]
-fn encrypt_2() {
+fn rijndael_2() {
     let b16 = Base16::new();
 
     let key =        b16.decode(b"00000000000000000000000000000000");
@@ -38,10 +40,11 @@ fn encrypt_2() {
     let cypher = Cypher::new(key);
 
     assert_eq!(cyphertext, cypher.encrypt(&plaintext));
+    assert_eq!(plaintext, cypher.decrypt(&cyphertext));
 }
 
 #[test]
-fn encrypt_3() {
+fn rijndael_3() {
     let b16 = Base16::new();
 
     let key =        b16.decode(b"00000000000000000000000000000000");
@@ -51,10 +54,11 @@ fn encrypt_3() {
     let cypher = Cypher::new(key);
 
     assert_eq!(cyphertext, cypher.encrypt(&plaintext));
+    assert_eq!(plaintext, cypher.decrypt(&cyphertext));
 }
 
 #[test]
-fn encrypt_4() {
+fn rijndael_4() {
     let b16 = Base16::new();
 
     let key =        b16.decode(b"00000000000000000000000000000000");
@@ -64,10 +68,11 @@ fn encrypt_4() {
     let cypher = Cypher::new(key);
 
     assert_eq!(cyphertext, cypher.encrypt(&plaintext));
+    assert_eq!(plaintext, cypher.decrypt(&cyphertext));
 }
 
 #[test]
-fn encrypt_5() {
+fn rijndael_5() {
     let b16 = Base16::new();
 
     let key =        b16.decode(b"00000000000000000000000000000000");
@@ -77,10 +82,11 @@ fn encrypt_5() {
     let cypher = Cypher::new(key);
 
     assert_eq!(cyphertext, cypher.encrypt(&plaintext));
+    assert_eq!(plaintext, cypher.decrypt(&cyphertext));
 }
 
 #[test]
-fn encrypt_6() {
+fn rijndael_6() {
     let b16 = Base16::new();
 
     let key =        b16.decode(b"00000000000000000000000000000000");
@@ -90,4 +96,5 @@ fn encrypt_6() {
     let cypher = Cypher::new(key);
 
     assert_eq!(cyphertext, cypher.encrypt(&plaintext));
+    assert_eq!(plaintext, cypher.decrypt(&cyphertext));
 }

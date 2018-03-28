@@ -29,5 +29,19 @@ impl Cypher {
         }
         out
     }
+
+    pub fn decrypt(&self, cyphertext: &[u8]) -> Vec<u8> {
+        let mut out = cyphertext.to_vec();
+        for (i, key) in self.schedule.iter().enumerate().rev() {
+            out = fixed_xor(&out, &key);
+            if i != 9 {
+                out = decrypt::mix_columns(&out);
+            }
+            out = decrypt::shift_rows(&out);
+            out = decrypt::byte_substitution(&out);
+        }
+        out = fixed_xor(&out, &self.key);
+        out
+    }
 }
 

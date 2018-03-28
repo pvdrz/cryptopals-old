@@ -41,11 +41,15 @@ pub fn shift_rows(buf: &[u8]) -> Vec<u8> {
 pub fn mix_columns(buf: &[u8]) -> Vec<u8> {
     let mut block = Vec::new();
     for i in 0..4 {
+        let a = buf[4*i];
+        let b = buf[4*i + 1];
+        let c = buf[4*i + 2];
+        let d = buf[4*i + 3];
         let col = [
-            MUL2[buf[4*i] as usize] ^ buf[3 + 4*i] ^ buf[2 + 4*i] ^ MUL3[buf[1 + 4*i] as usize],
-            MUL2[buf[1 + 4*i] as usize] ^ buf[4*i] ^ buf[3 + 4*i] ^ MUL3[buf[2 + 4*i] as usize],
-            MUL2[buf[2 + 4*i] as usize] ^ buf[1 + 4*i] ^ buf[4*i] ^ MUL3[buf[3 + 4*i] as usize],
-            MUL2[buf[3 + 4*i] as usize] ^ buf[2 + 4*i] ^ buf[1 + 4*i] ^ MUL3[buf[4*i] as usize],
+            MUL2[a as usize] ^ d ^ c ^ MUL3[b as usize],
+            MUL2[b as usize] ^ a ^ d ^ MUL3[c as usize],
+            MUL2[c as usize] ^ b ^ a ^ MUL3[d as usize],
+            MUL2[d as usize] ^ c ^ b ^ MUL3[a as usize],
         ];
         block.extend_from_slice(&col);
     }
