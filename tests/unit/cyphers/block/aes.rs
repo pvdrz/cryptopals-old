@@ -1,9 +1,9 @@
-use cryptopals::cyphers::rijndael::Cypher;
-use cryptopals::cyphers::rijndael::Mode::ECB;
+use cryptopals::cyphers::block::aes::Cypher;
+use cryptopals::cyphers::block::aes::Mode::ECB;
 use cryptopals::encoding::base16::Base16;
 
 #[test]
-fn rijndael_0() {
+fn aes_0() {
     let b16 = Base16::new();
 
     let key =        b16.decode(b"00000000000000000000000000000000");
@@ -17,7 +17,7 @@ fn rijndael_0() {
 }
 
 #[test]
-fn rijndael_1() {
+fn aes_1() {
     let b16 = Base16::new();
 
     let key =        b16.decode(b"00000000000000000000000000000000");
@@ -31,7 +31,7 @@ fn rijndael_1() {
 }
 
 #[test]
-fn rijndael_2() {
+fn aes_2() {
     let b16 = Base16::new();
 
     let key =        b16.decode(b"00000000000000000000000000000000");
@@ -45,7 +45,7 @@ fn rijndael_2() {
 }
 
 #[test]
-fn rijndael_3() {
+fn aes_3() {
     let b16 = Base16::new();
 
     let key =        b16.decode(b"00000000000000000000000000000000");
@@ -59,7 +59,7 @@ fn rijndael_3() {
 }
 
 #[test]
-fn rijndael_4() {
+fn aes_4() {
     let b16 = Base16::new();
 
     let key =        b16.decode(b"00000000000000000000000000000000");
@@ -73,7 +73,7 @@ fn rijndael_4() {
 }
 
 #[test]
-fn rijndael_5() {
+fn aes_5() {
     let b16 = Base16::new();
 
     let key =        b16.decode(b"00000000000000000000000000000000");
@@ -87,7 +87,7 @@ fn rijndael_5() {
 }
 
 #[test]
-fn rijndael_6() {
+fn aes_6() {
     let b16 = Base16::new();
 
     let key =        b16.decode(b"00000000000000000000000000000000");

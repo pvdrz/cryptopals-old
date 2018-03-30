@@ -1,5 +1,5 @@
-use cryptopals::cyphers::rijndael::Cypher;
-use cryptopals::cyphers::rijndael::Mode::ECB;
+use cryptopals::cyphers::block::aes::Cypher;
+use cryptopals::cyphers::block::aes::Mode::ECB;
 use cryptopals::encoding::base64::Base64;
 use cryptopals::utils::io::load_as_bytes;
 

@@ -1,2 +1,2 @@
-pub mod rijndael;
+pub mod block;
 
