@@ -1,4 +1,4 @@
-use cryptopals::attacks::rijndael::detect_ecb;
+use cryptopals::attacks::block::detect_ecb;
 use cryptopals::utils::io::load_as_bytes;
 use cryptopals::encoding::base16::Base16;
 

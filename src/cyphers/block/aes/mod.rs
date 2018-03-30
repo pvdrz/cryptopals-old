@@ -2,23 +2,20 @@ mod encrypt;
 mod decrypt;
 
 use cyphers::xor::fixed_xor;
+use cyphers::block::OpMode;
 use rayon::slice::ParallelSlice;
 use rayon::iter::ParallelIterator;
 
-pub enum Mode {
-    ECB
-}
-
-pub struct Cypher {
+pub struct AESCypher {
     key: Vec<u8>,
     schedule: Vec<Vec<u8>>,
-    mode: Mode
+    mode: OpMode
 }
 
-impl Cypher {
-    pub fn new(key: Vec<u8>, mode: Mode) -> Self {
+impl AESCypher {
+    pub fn new(key: Vec<u8>, mode: OpMode) -> Self {
         let schedule = encrypt::key_schedule(&key);
-        Cypher {
+        AESCypher {
             key: key,
             schedule: schedule,
             mode: mode
@@ -54,14 +51,14 @@ impl Cypher {
 
     pub fn encrypt(&self, plaintext: &[u8]) -> Vec<u8> {
         match self.mode {
-            Mode::ECB => plaintext.par_chunks(16)
+            OpMode::ECB => plaintext.par_chunks(16)
                 .flat_map(|b| self.encrypt_block(b)).collect()
         }
     }
 
     pub fn decrypt(&self, cyphertext: &[u8]) -> Vec<u8> {
         match self.mode {
-            Mode::ECB => cyphertext.par_chunks(16)
+            OpMode::ECB => cyphertext.par_chunks(16)
                 .flat_map(|b| self.decrypt_block(b)).collect()
         }
     }
