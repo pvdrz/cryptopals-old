@@ -1,10 +1,12 @@
+use cyphers::xor::fixed_xor;
 use rayon::slice::ParallelSlice;
 use rayon::iter::ParallelIterator;
 
 pub mod aes;
 
 pub enum OperationMode {
-    ECB
+    ECB,
+    CBC(Vec<u8>)
 }
 
 pub struct BlockCypher<T: Cypher> {
@@ -23,14 +25,33 @@ impl<T: Cypher> BlockCypher<T> {
         match self.operation_mode {
             OperationMode::ECB => plaintext
                 .par_chunks(self.cypher.blocksize())
-                .flat_map(|b| self.cypher.encrypt_block(b)).collect()
+                .flat_map(|b| self.cypher.encrypt_block(b)).collect(),
+            OperationMode::CBC(ref init_vec) => {
+                let mut vec = init_vec.clone();
+                let mut cyphertext = Vec::new();
+                for block in plaintext.chunks(self.cypher.blocksize()) {
+                    vec = self.cypher.encrypt_block(&fixed_xor(block, &vec));
+                    cyphertext.extend_from_slice(&vec);
+                }
+                cyphertext
+            }
         }
     }
     pub fn decrypt(&self, cyphertext: &[u8]) -> Vec<u8> {
         match self.operation_mode {
             OperationMode::ECB => cyphertext
                 .par_chunks(self.cypher.blocksize())
-                .flat_map(|b| self.cypher.decrypt_block(b)).collect()
+                .flat_map(|b| self.cypher.decrypt_block(b)).collect(),
+            OperationMode::CBC(ref init_vec) => {
+                let mut vec = init_vec.clone();
+                let mut plaintext = Vec::new();
+                for block in cyphertext.chunks(self.cypher.blocksize()) {
+                    plaintext.extend_from_slice(
+                        &fixed_xor(&self.cypher.decrypt_block(&block), &vec));
+                    vec = block.to_vec();
+                }
+                plaintext
+            }
         }
     }
 }
