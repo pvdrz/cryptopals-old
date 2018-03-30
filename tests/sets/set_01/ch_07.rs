@@ -1,5 +1,5 @@
 use cryptopals::cyphers::block::aes::AESCypher;
-use cryptopals::cyphers::block::{BlockCypher, Cypher, OperationMode};
+use cryptopals::cyphers::block::{BlockCypher, OperationMode::ECB};
 use cryptopals::encoding::base64::Base64;
 use cryptopals::utils::io::load_as_bytes;
 
@@ -7,7 +7,7 @@ use cryptopals::utils::io::load_as_bytes;
 fn challenge_07() {
     let b64 = Base64::new();
     let key = b"YELLOW SUBMARINE".to_vec();
-    let cypher = BlockCypher::new(AESCypher::new(key), OperationMode::ECB);
+    let cypher = BlockCypher::new(AESCypher::new(key), ECB);
 
     let cyphertext = b64.decode(&load_as_bytes("data/7.txt").unwrap());
     let plaintext = cypher.decrypt(&cyphertext);
