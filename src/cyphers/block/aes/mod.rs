@@ -2,32 +2,28 @@ mod encrypt;
 mod decrypt;
 
 use cyphers::xor::fixed_xor;
-use cyphers::block::{OperationMode, BlockCypher};
+use cyphers::block::Cypher;
 
 pub struct AESCypher {
     key: Vec<u8>,
     schedule: Vec<Vec<u8>>,
-    operation_mode: OperationMode
+    blocksize: usize
 }
 
 impl AESCypher {
-    pub fn new(key: Vec<u8>, operation_mode: OperationMode) -> Self {
+    pub fn new(key: Vec<u8>) -> Self {
         let schedule = encrypt::key_schedule(&key);
         AESCypher {
             key: key,
             schedule: schedule,
-            operation_mode: operation_mode
+            blocksize: 16
         }
     }
 }
 
-impl BlockCypher for AESCypher {
+impl Cypher for AESCypher {
     fn blocksize(&self) -> usize {
-        16
-    }
-
-    fn operation_mode(&self) -> &OperationMode {
-       &self.operation_mode
+        self.blocksize
     }
 
     fn encrypt_block(&self, plaintext: &[u8]) -> Vec<u8> {
