@@ -1,5 +1,6 @@
 use cryptopals::cyphers::block::aes::AESCypher;
-use cryptopals::cyphers::block::OpMode::ECB;
+use cryptopals::cyphers::block::BlockCypher;
+use cryptopals::cyphers::block::OperationMode::ECB;
 use cryptopals::encoding::base64::Base64;
 use cryptopals::utils::io::load_as_bytes;
 

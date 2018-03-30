@@ -1,5 +1,6 @@
 use cryptopals::cyphers::block::aes::AESCypher;
-use cryptopals::cyphers::block::OpMode::ECB;
+use cryptopals::cyphers::block::BlockCypher;
+use cryptopals::cyphers::block::OperationMode::ECB;
 use cryptopals::encoding::base16::Base16;
 
 #[test]
