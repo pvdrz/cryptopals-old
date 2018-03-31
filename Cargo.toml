@@ -6,3 +6,4 @@ authors = ["Christian Poveda <christianpoveda@protonmail.com>"]
 [dependencies]
 lazy_static = "1.0"
 rayon = "1.0"
+rand = "0.4.2"
