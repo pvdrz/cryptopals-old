@@ -1,3 +1,5 @@
+#![feature(string_retain)]
+
 #[macro_use]
 extern crate lazy_static;
 extern crate rayon;
