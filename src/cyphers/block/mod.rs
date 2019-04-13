@@ -1,7 +1,8 @@
-use cyphers::xor::fixed_xor;
 use rayon::slice::ParallelSlice;
 use rayon::iter::ParallelIterator;
-use utils::padding::pkcs7;
+
+use crate::cyphers::xor::fixed_xor;
+use crate::utils::padding::pkcs7;
 
 pub mod aes;
 

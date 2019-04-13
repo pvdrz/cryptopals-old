@@ -1,6 +1,8 @@
-use fields::rijndael::invert;
-use fields::rijndael::mul;
-use cyphers::xor::fixed_xor;
+use lazy_static::lazy_static;
+
+use crate::fields::rijndael::invert;
+use crate::fields::rijndael::mul;
+use crate::cyphers::xor::fixed_xor;
 
 lazy_static! {
     static ref SBOX: Vec<u8> = {

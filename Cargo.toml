@@ -2,8 +2,9 @@
 name = "cryptopals"
 version = "0.1.0"
 authors = ["Christian Poveda <christianpoveda@protonmail.com>"]
+edition = "2018"
 
 [dependencies]
 lazy_static = "1.0"
 rayon = "1.0"
-rand = "0.4.2"
+rand = "0.6.5"

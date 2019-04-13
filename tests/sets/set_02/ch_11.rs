@@ -1,7 +1,8 @@
 use cryptopals::attacks::block::ecb_oracle;
 use cryptopals::cyphers::block::aes::AESCypher;
+use rand::{thread_rng, RngCore, Rng};
+
 use cryptopals::cyphers::block::{BlockCypher, OperationMode};
-use rand::{thread_rng, Rng};
 
 #[test]
 fn challenge_11() {

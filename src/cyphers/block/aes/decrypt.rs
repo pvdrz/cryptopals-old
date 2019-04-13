@@ -1,5 +1,7 @@
-use fields::rijndael::invert;
-use fields::rijndael::mul;
+use lazy_static::lazy_static;
+
+use crate::fields::rijndael::invert;
+use crate::fields::rijndael::mul;
 
 lazy_static! {
     static ref SBOX: Vec<u8> = {

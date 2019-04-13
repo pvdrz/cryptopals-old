@@ -1,8 +1,8 @@
 mod encrypt;
 mod decrypt;
 
-use cyphers::xor::fixed_xor;
-use cyphers::block::Cypher;
+use crate::cyphers::xor::fixed_xor;
+use crate::cyphers::block::Cypher;
 
 pub struct AESCypher {
     key: Vec<u8>,

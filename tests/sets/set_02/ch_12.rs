@@ -1,8 +1,9 @@
-use cryptopals::attacks::block::{find_blocksize, ecb_oracle, baat_ecb_decrypt};
+use rand::{thread_rng, RngCore};
+
+use cryptopals::attacks::block::{baat_ecb_decrypt, ecb_oracle, find_blocksize};
 use cryptopals::cyphers::block::aes::AESCypher;
 use cryptopals::cyphers::block::{BlockCypher, OperationMode};
 use cryptopals::encoding::base64::Base64;
-use rand::{thread_rng, Rng};
 
 #[test]
 fn challenge_12() {
@@ -25,7 +26,7 @@ fn challenge_12() {
 
 struct BlackBox {
     cypher: BlockCypher<AESCypher>,
-    suffix: Vec<u8>
+    suffix: Vec<u8>,
 }
 
 impl BlackBox {
@@ -36,7 +37,7 @@ impl BlackBox {
         let cypher = BlockCypher::new(AESCypher::new(key.to_vec()), OperationMode::ECB);
         BlackBox {
             cypher: cypher,
-            suffix: suffix.to_vec()
+            suffix: suffix.to_vec(),
         }
     }
 
